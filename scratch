@@ -1,0 +1,8 @@
+ByteBuffer {
+  buffer:
+   <Buffer 08 07 12 20 ab 82 bd 6a 85 fe e8 b6 cf 8f e0 6d 50 b3 bb 65 e1 68 a979 29 0d ad 9f c2 29 21 3e 23 a9 86 ec 1a 20 92 be 9b 43 19 a1 f7 46 68 71 6c 98 ... >,
+  offset: 4,
+  markedOffset: -1,
+  limit: 36,
+  littleEndian: true,
+  noAssert: false }

@@ -1,0 +1,49 @@
+{
+    "trader1" : {
+        "$class": "org.example.mynetwork.Trader",
+        "traderId": "TRADER1",
+        "name": "Adam's Apples"
+    },
+
+    "good1" : {
+        "$class": "org.example.mynetwork.Good",
+        "goodId": "GOOD1",
+        "name": "Apple shipment",
+        "description": "Apple shipment",
+        "status": "IN_TRANSIT",
+        "location": {
+        "$class": "org.example.mynetwork.Location",
+        "coordinates": ["1.3521", "103.8198"],
+        "name": "Keppel Port, Singapore"
+        },
+        "history": [],
+        "owner": "TRADER1"
+    },
+
+    "good2" : {
+        "$class": "org.example.mynetwork.Good",
+        "goodId": "GOOD2",
+        "name": "Banana shipment",
+        "description": "Fresh tasty bananas off the coast of Côte d'Ivoire",
+        "status": "IN_TRANSIT",
+        "location": {
+        "$class": "org.example.mynetwork.Location",
+        "coordinates": ["7.5400", "5.5471"],
+        "name": "Yamoussoukro, Côte d'Ivoire"
+        },
+        "history": [],
+        "owner": "TRADER1"    
+    },
+
+    "update1" : {
+        "$class": "org.example.mynetwork.UpdateLocation",
+        "time": "2018-07-20T07:22:01.114Z",
+        "good": "GOOD2",
+        "newLocation": {
+        "$class": "org.example.mynetwork.Location",   
+        "coordinates": ["14.4974", "-14.4524"],
+        "name": "Autonomous Port of Senegal"
+        },
+        "timestamp": "2018-07-20T07:22:01.115Z"
+    }
+}
