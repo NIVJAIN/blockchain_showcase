@@ -100,7 +100,7 @@ app.get('/blocks', async function(req, res) {
 })
 
 app.get('/block_vis', async function(req, res) {
-    res.sendFile(__dirname + '/visualiser/index2.html')
+    res.sendFile(__dirname + '/visualiser/index.html')
 })
 
 app.get('/updatelocation', (req, res) => {
