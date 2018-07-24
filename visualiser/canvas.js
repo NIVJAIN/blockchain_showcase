@@ -65,7 +65,7 @@ function drawBlocks() {
 
 async function addNewBlock(block) {
     let X = 200;
-    console.log("hel");
+    //console.log("hel");
     //console.log(length(RECTS));
     //console.log(RECTS[length(RECTS)-1]);
     let last_x = RECTS[RECTS.length-1].x;
@@ -85,7 +85,7 @@ async function addNewBlock(block) {
     //console.log(promises);
 
     Promise.all(promises).then(() => {
-        console.log("all promises resolved");
+        //console.log("all promises resolved");
         last_x = RECTS[RECTS.length-1].x;
         let rect = drawBlock(block, RECTS.length, last_x+200, 0);
         createjs.Tween.get(rect).to({y: Y}, 500);
@@ -119,7 +119,7 @@ function getInitialBlocks() {
 }
 
 function updateBlocks(blocks) {
-    
+
 }
 
 function getNewBlocks() {
@@ -142,7 +142,7 @@ function init() {
     drawBlocks();
     //setInterval(getNewBlocks, 3000);
     //setInterval(shiftBlockLeft, 2000);
-    //setInterval(addNew, 3000);
+    setInterval(addNew, 3000);
 }
 
 function addNew() {
@@ -150,7 +150,7 @@ function addNew() {
     return;
 }
 
-createjs.Ticker.setFPS(24);
+createjs.Ticker.setFPS(30);
 createjs.Ticker.addEventListener("tick", STAGE);
 
 init();
