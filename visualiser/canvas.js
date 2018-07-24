@@ -63,13 +63,13 @@ function drawBlocks() {
 }
 
 
-async function addNewBlock(block) {
+async function addNewBlock(blocks) {
     let X = 200;
     //console.log("hel");
     //console.log(length(RECTS));
     //console.log(RECTS[length(RECTS)-1]);
     let last_x = RECTS[RECTS.length-1].x;
-    let x_to_move = last_x - CANVAS.width + 400;
+    let x_to_move = last_x - CANVAS.width + 200 + (200*blocks.length);
     if (x_to_move < 0) {
         x_to_move = 0;
     }
@@ -82,14 +82,15 @@ async function addNewBlock(block) {
             createjs.Tween.get(rect).to({x : new_x}, 800).call(resolve);
         }));
     })
-    //console.log(promises);
 
     Promise.all(promises).then(() => {
         //console.log("all promises resolved");
         last_x = RECTS[RECTS.length-1].x;
-        let rect = drawBlock(block, RECTS.length, last_x+200, 0);
-        createjs.Tween.get(rect).to({y: Y}, 500);
-        RECTS.push(rect)
+        blocks.map((block, idx) => {
+            let rect = drawBlock(block, RECTS.length, last_x+(200*(idx+1)), 0);
+            createjs.Tween.get(rect).to({y: Y}, 500);
+            RECTS.push(rect)
+        })
     })
 }
 
@@ -134,9 +135,6 @@ function getNewBlocks() {
     xhr.send();
 }
 
-
-
-
 function init() {
     getInitialBlocks();
     drawBlocks();
@@ -145,8 +143,9 @@ function init() {
     setInterval(addNew, 3000);
 }
 
-function addNew() {
-    addNewBlock(fake_block);
+// doesn't work async...
+async function addNew() {
+    addNewBlock([fake_block, fake_block]);
     return;
 }
 

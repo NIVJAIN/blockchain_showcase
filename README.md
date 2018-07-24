@@ -22,5 +22,7 @@ limitations of the DOM, and built in in Canvas instead (Easel.js, Tween.js)
 1. Shortest path problem---make sure to make some headway on this
 2. Find a way to get a Raspi and set up HTTP request to the server
 3. Polish up the canvas blockchain visualisation and make sure it handles multiple block additions
-4. Find a way to get a servo to push the track up
+4. Find a way to get a servo to push the track up, or look into model train sets
 5. Start looking into ways to get terrain, paints, to gussy up the prototype? Cork board base?
+
+## Wednesday
