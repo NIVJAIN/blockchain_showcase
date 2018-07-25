@@ -39,29 +39,76 @@ function drawBlock(block, idx, x, y) {
     rect.x = x;
     rect.y = y;
     const font_face = "1em monospace";
+    const big_font_face = "1.5em monospace";
     const font_color = "#111111";
     const font_color2 = "#FFFFFF";
     var block_box = new createjs.Shape();
     block_box.name = "block_box";   
-    const block_num = new createjs.Text(`Block # ${idx}`, font_face, font_color);
+    const block_num = new createjs.Text(`Block # ${idx}`, big_font_face, font_color);
     block_num.y = 0;
     const timestamp = new createjs.Text(block.data.data[0].payload.header.channel_header.timestamp.substring(0,25), font_face, font_color)
-    timestamp.y = 20;
-    timestamp.linewidth = BLOCK_WIDTH;
+    timestamp.y = 30;
+    timestamp.lineWidth = BLOCK_WIDTH;
+    timestamp.lineHeight = 20;
+
+    var lines = [];
+    var display_lines = [];
+    
+    try {
+        var ba = block.data.data[0].payload.data.actions[0].payload.action.proposal_response_payload.extension.results.ns_rwset[1].rwset.writes[2].value;
+
+        var ba = JSON.parse(ba);
+        console.log(ba);
+        //console.log(ba["$class"]);
+
+        
+
+        if (ba["$class"] === "org.example.mynetwork.UpdateLocation") {
+            //console.log('hello');
+            lines.push(
+                "Location Update:",
+                `${ba.good.slice(-5)} moved to ${ba.newLocation.name} (${ba.newLocation.coordinates[0]}, ${ba.newLocation.coordinates[1]})`
+            )
+        }
+        else if (ba["$class"] === "org.hyperledger.composer.system.AddAsset") {
+            console.log(ba.resources);
+            lines.push(
+                "Asset added: ",
+                ba.resources[0].goodId,
+                ba.resources[0].name,
+                ba.resources[0].description,
+            )
+        }
+
+        lines.forEach((line, idx) => {
+            display_lines.push(new createjs.Text(line, font_face, font_color));
+            display_lines[idx].y = 80+(20*idx)
+            display_lines[idx].lineWidth = BLOCK_WIDTH;
+            display_lines[idx].lineHeight = 20; 
+        })
+        
+    }
+    catch {
+        console.log('block data is undefined')
+    }
+
 
     var hash_box = new createjs.Shape();
     hash_box.name = "hash_box";
     hash_box.y = 300;
     hash_box.graphics.beginFill("#444444").rect(0, 0, BLOCK_WIDTH, 100);
-
     const previous_hash_label = new createjs.Text("Previous hash: ", font_face, font_color2);
     previous_hash_label.y = 300;
     const previous_hash = new createjs.Text(block.header.previous_hash, font_face, font_color2);
-    previous_hash.linewidth = BLOCK_WIDTH;
+    previous_hash.lineWidth = BLOCK_WIDTH;
     previous_hash.y = 320;
+
     
     block_box.graphics.beginFill("#DDDDDD").rect(0, 0, BLOCK_WIDTH, BLOCK_HEIGHT);
     rect.addChild(block_box, hash_box, block_num, timestamp, previous_hash_label, previous_hash);
+    display_lines.forEach((line) => {
+        rect.addChild(line);
+    })
     STAGE.addChild(rect);
 
     return rect;
@@ -140,7 +187,7 @@ function getNewBlocks() {
     var xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function(e) {
         if (this.readyState === 4) {
-            console.log(JSON.parse(this.responseText));
+            //console.log(JSON.parse(this.responseText));
             updateBlocks(JSON.parse(this.responseText));
         }
     }
