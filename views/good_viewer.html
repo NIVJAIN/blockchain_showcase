@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+    <meta name = "viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.3/dist/leaflet.css"
+    integrity="sha512-Rksm5RenBEKSKFjgI3a41vrjkw4EVPlJ3+OiI65vTjIdo9brlAacEuKOiQ5OFh7cOI1bkDwLqdLw3Zg0cRJAAQ=="
+    crossorigin=""/>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            text-align: center;
+            height: 100%;
+        }
+        img {
+            display:block;
+            margin: 0 auto;
+        }
+        #mapid {height:30vh}
+    </style>
+    <body onload=init()>
+    <h1>Asset Tracker</h1>
+    <!--
+    ID: ${id}
+    ${body.name} <br>
+    -->
+    <!--
+    <img src="https://cdn4.iconfinder.com/data/icons/logistic-delivery-solid-icons-vol-3/72/104-512.png" width="200">
+    -->
+    <div id="mapid"></div>
+
+    <ul>
+        <li id="description"></li>
+        <li id="status"></li>
+        <li id="location_name"></li>
+        <li id="location_coords"></li>
+    </ul>
+
+    <!--
+    <ul>
+        <li> ${body.description}
+        <li> ${body.status}
+        <li> ${body.location.name}
+        <li> ${body.location.coordinates}`
+
+    body.history.map((item) => {
+        obj = obj + `<li> ${item}`
+    });
+
+    obj = obj +
+    `    
+    -->
+
+    </body>
+    <script src="https://unpkg.com/leaflet@1.3.3/dist/leaflet.js"
+        integrity="sha512-tAGcCfR4Sc5ZP5ZoVz0quoZDYX5aCtEm/eu1KhSLj2c9eFrylXZknQYmxUssFaVJKvvc0dJQixhGjG2yXWiV9Q=="
+        crossorigin="">
+    </script>
+    <script src="good_viewer.js"></script>
+    </html>`

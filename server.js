@@ -9,8 +9,11 @@ const fs = require('fs');
 app.set('port', port);
 app.use(bodyParser.json());
 app.use(cors());
-app.use(express.static(__dirname + '/View'));
+app.use(express.static(__dirname + '/views'));
 app.use(express.static(__dirname + '/visualiser'));
+app.set('view engine', 'pug');
+app.set('views', './views')
+
 var server = require('http').createServer(app);
 const BusinessNetworkConnection = require('composer-client').BusinessNetworkConnection;
 const card = 'admin@tutorial-network';
@@ -85,6 +88,8 @@ async function updateBlockData(block_index) {
     return payload;
 }
 
+
+
 app.get('/new_blocks', async function(req, res) {
     //console.log('hello');
     let payload = await updateBlockData(LAST_BLOCK);
@@ -154,95 +159,94 @@ app.get('/history', (rq, rs) => {
     })
 })
 
+/*
+app.get('/good_vis', function (req,res) {
+    res.sendFile(__dirname + '/View/index.html')
+})
+*/
+
 app.get('/goods', function(req, res){
     console.log(req.query);
     request(`http://localhost:3000/api/Good/${req.query.id}`, {json: true}, (err, resp, body) => {
         if (err) {return console.log(err)}
         console.log(body);
-        var id = body.goodId;
-
         var obj = `
-        <html>
-        <meta name = "viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.3/dist/leaflet.css"
-        integrity="sha512-Rksm5RenBEKSKFjgI3a41vrjkw4EVPlJ3+OiI65vTjIdo9brlAacEuKOiQ5OFh7cOI1bkDwLqdLw3Zg0cRJAAQ=="
-        crossorigin=""/>
-        <!-- Make sure you put this AFTER Leaflet's CSS -->
- 
-        <style>
-            . {
-                margin: 0;
-                padding: 0;
-            }
-            body {
-                text-align: center;
-                height: 100%;
-            }
-            img {
-                display:block;
-                margin: 0 auto;
-            }
-            #mapid {height:30vh}
-        </style>
-        <script>
-        function init() {
-            var mymap = L.map('mapid', {zoomControl:false} ).setView([45, 0], 0);
-            L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
-            }).addTo(mymap);
+<!DOCTYPE html>
+<html>
+    <meta name = "viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.3/dist/leaflet.css"
+    integrity="sha512-Rksm5RenBEKSKFjgI3a41vrjkw4EVPlJ3+OiI65vTjIdo9brlAacEuKOiQ5OFh7cOI1bkDwLqdLw3Zg0cRJAAQ=="
+    crossorigin=""/>
+    <script>
+    'use strict';
 
-            mymap.dragging.disable();
-            mymap.touchZoom.disable();
-            mymap.doubleClickZoom.disable();
-            mymap.scrollWheelZoom.disable();
+function initMap() {
+    var mymap = L.map('mapid', {zoomControl:false} ).setView([45, 0], 0);
+    L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
+    }).addTo(mymap);
 
-            var pointA = new L.LatLng(14, -1);
-            var pointB = new L.LatLng(0, 77.70641);
-            var pointList = [pointA, pointB];
+    mymap.dragging.disable();
+    mymap.touchZoom.disable();
+    mymap.doubleClickZoom.disable();
+    mymap.scrollWheelZoom.disable();
 
-            var markerA = L.marker(pointA).addTo(mymap);
-            var markerB = L.marker(pointB).addTo(mymap);
+    var pointList = [];`
 
-            var firstpolyline = new L.Polyline(pointList, {
-                color: 'red',
-                weight: 1,
-                opacity: 0.5,
-                smoothFactor: 0
-            });
-            firstpolyline.addTo(mymap);
+    var coords = body.location.coordinates;
+    obj += `
+    pointList.push(new L.LatLng(${coords[0]}, ${coords[1]}));
+    L.marker(pointList[0]).addTo(mymap);
 
+    var firstpolyline = new L.Polyline(pointList, {
+        color: 'red',
+        weight: 1,
+        opacity: 0.5,
+        smoothFactor: 0
+    });
+    firstpolyline.addTo(mymap);
+}
+</script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
         }
-        </script>
-        <body onload=init()>
-        <h1>Asset Tracker</h1>
-        ID: ${id}
-        ${body.name} <br>
-        <!--
-        <img src="https://cdn4.iconfinder.com/data/icons/logistic-delivery-solid-icons-vol-3/72/104-512.png" width="200">
-        -->
-        <div id="mapid"></div>
-        <ul>
-            <li> ${body.description}
-            <li> ${body.status}
-            <li> ${body.location.name}
-            <li> ${body.location.coordinates}`
-
-        body.history.map((item) => {
-            obj = obj + `<li> ${item}`
-        });
+        body {
+            text-align: center;
+            height: 100%;
+        }
+        img {
+            display:block;
+            margin: 0 auto;
+        }
+        #mapid {height:30vh}
+    </style>
+    <body onload=initMap()>
+    <h1>Asset Tracker</h1>
+    ID: ${body.id}
+    ${body.name} <br>
+    <div id="mapid"></div>
+    <ul>
+        <li> ${body.description}
+        <li> ${body.status}
+        <li> ${body.location.name}
+        <li> ${body.location.coordinates}`
     
-        obj = obj +
-        `    
-        </ul>
+    body.history.reverse().map((item) => {
+        obj = obj + `<li> ${item}`
+    });
 
-        </body>
-        <script src="https://unpkg.com/leaflet@1.3.3/dist/leaflet.js"
-            integrity="sha512-tAGcCfR4Sc5ZP5ZoVz0quoZDYX5aCtEm/eu1KhSLj2c9eFrylXZknQYmxUssFaVJKvvc0dJQixhGjG2yXWiV9Q=="
-            crossorigin=""></script>
-        </html>`
+    obj = obj +
+    `    
 
-        //res.write(obj)
+    </body>
+    <script src="https://unpkg.com/leaflet@1.3.3/dist/leaflet.js"
+        integrity="sha512-tAGcCfR4Sc5ZP5ZoVz0quoZDYX5aCtEm/eu1KhSLj2c9eFrylXZknQYmxUssFaVJKvvc0dJQixhGjG2yXWiV9Q=="
+        crossorigin="">
+    </script>
+    </html>`
         res.send(obj);
-        //res.end;
+        //res.render('good_viewer', body);
     })
 })
 

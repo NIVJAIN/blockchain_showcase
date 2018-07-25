@@ -120,7 +120,8 @@ function getInitialBlocks() {
 }
 
 function updateBlocks(blocks) {
-
+    let block_array = blocks.blocks
+    addNewBlock(block_array)
 }
 
 function getNewBlocks() {
@@ -138,9 +139,9 @@ function getNewBlocks() {
 function init() {
     getInitialBlocks();
     drawBlocks();
-    //setInterval(getNewBlocks, 3000);
+    setInterval(getNewBlocks, 3000);
     //setInterval(shiftBlockLeft, 2000);
-    setInterval(addNew, 3000);
+    //setInterval(addNew, 3000);
 }
 
 // doesn't work async...
