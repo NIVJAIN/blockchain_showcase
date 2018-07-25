@@ -38,18 +38,30 @@ function drawBlock(block, idx, x, y) {
     var rect = new createjs.Container();
     rect.x = x;
     rect.y = y;
-    const font_face = "20px Arial";
-    const font_color = "#222222";
+    const font_face = "1em monospace";
+    const font_color = "#111111";
+    const font_color2 = "#FFFFFF";
     var block_box = new createjs.Shape();
     block_box.name = "block_box";   
     const block_num = new createjs.Text(`Block # ${idx}`, font_face, font_color);
     block_num.y = 0;
     const timestamp = new createjs.Text(block.data.data[0].payload.header.channel_header.timestamp.substring(0,25), font_face, font_color)
     timestamp.y = 20;
-    const previous_hash = new createjs.Text(block.header.previous_hash.substring(0,10) + '...', font_face, font_color);
-    previous_hash.y = 50
+    timestamp.linewidth = BLOCK_WIDTH;
+
+    var hash_box = new createjs.Shape();
+    hash_box.name = "hash_box";
+    hash_box.y = 300;
+    hash_box.graphics.beginFill("#444444").rect(0, 0, BLOCK_WIDTH, 100);
+
+    const previous_hash_label = new createjs.Text("Previous hash: ", font_face, font_color2);
+    previous_hash_label.y = 300;
+    const previous_hash = new createjs.Text(block.header.previous_hash, font_face, font_color2);
+    previous_hash.linewidth = BLOCK_WIDTH;
+    previous_hash.y = 320;
+    
     block_box.graphics.beginFill("#DDDDDD").rect(0, 0, BLOCK_WIDTH, BLOCK_HEIGHT);
-    rect.addChild(block_box, block_num, timestamp, previous_hash);
+    rect.addChild(block_box, hash_box, block_num, timestamp, previous_hash_label, previous_hash);
     STAGE.addChild(rect);
 
     return rect;

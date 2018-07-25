@@ -138,6 +138,9 @@ app.get('/populate', function(req, res){
     }).then(function(results){
         console.log("Promise1", results)
         return http('http://localhost:3000/api/Good','post', fake_data.good2)
+    }).then(function(results){
+        console.log("Promise1", results)
+        return http('http://localhost:3000/api/Good','post', fake_data.good3)
     }).then((results) => {
         console.log("Promise2", results)
         return http('http://localhost:3000/api/UpdateLocation', 'post', fake_data.update1)
@@ -177,6 +180,7 @@ app.get('/goods', function(req, res){
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.3/dist/leaflet.css"
     integrity="sha512-Rksm5RenBEKSKFjgI3a41vrjkw4EVPlJ3+OiI65vTjIdo9brlAacEuKOiQ5OFh7cOI1bkDwLqdLw3Zg0cRJAAQ=="
     crossorigin=""/>
+    <link rel="stylesheet" href="good_viewer.css"/>
     <script>
     'use strict';
 
@@ -206,44 +210,35 @@ function initMap() {
     firstpolyline.addTo(mymap);
 }
 </script>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-        }
-        body {
-            text-align: center;
-            height: 100%;
-        }
-        img {
-            display:block;
-            margin: 0 auto;
-        }
-        #mapid {height:30vh}
-    </style>
+<script src="https://unpkg.com/leaflet@1.3.3/dist/leaflet.js"
+integrity="sha512-tAGcCfR4Sc5ZP5ZoVz0quoZDYX5aCtEm/eu1KhSLj2c9eFrylXZknQYmxUssFaVJKvvc0dJQixhGjG2yXWiV9Q=="
+crossorigin=""> </script>
+
     <body onload=initMap()>
-    <h1>Asset Tracker</h1>
-    ID: ${body.id}
-    ${body.name} <br>
+    <div class = "wrapper">
+    <h1> Tracking asset: ${body.goodId}</h1>
+    <h2> ${body.name} </h2>
     <div id="mapid"></div>
+    <p class="status">${body.status}</p>
     <ul>
         <li> ${body.description}
-        <li> ${body.status}
-        <li> ${body.location.name}
-        <li> ${body.location.coordinates}`
-    
+        <li> ${body.location.name} (${body.location.coordinates}) 
+    </ul>
+
+    <h2 class="history_header"> Item history </h2>
+    <ul>
+    `
+
     body.history.reverse().map((item) => {
-        obj = obj + `<li> ${item}`
+        obj += `<li> ${item}`
     });
 
     obj = obj +
-    `    
-
+    `
+    </ul>    
+    </div>
     </body>
-    <script src="https://unpkg.com/leaflet@1.3.3/dist/leaflet.js"
-        integrity="sha512-tAGcCfR4Sc5ZP5ZoVz0quoZDYX5aCtEm/eu1KhSLj2c9eFrylXZknQYmxUssFaVJKvvc0dJQixhGjG2yXWiV9Q=="
-        crossorigin="">
-    </script>
+
     </html>`
         res.send(obj);
         //res.render('good_viewer', body);

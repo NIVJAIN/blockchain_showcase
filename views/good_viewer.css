@@ -1,0 +1,40 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+body {
+    height: 100%;
+    font-family: monospace;
+}
+.wrapper {
+    margin: 0 auto;
+    width: 90%;
+}
+img {
+    display:block;
+    margin: 0 auto;
+}
+li {
+    list-style: none;
+    padding: 10px;
+}
+
+.status {
+    color: rgba(200, 100, 0, 1);
+    font-weight: 800;
+    font-size: 1.5em;
+    text-align: center;
+}
+
+.history_header {
+    color: rgba(200, 100, 0, 1);
+    font-weight: 800;
+    font-size: 1.5em;
+    text-align: center;
+}
+
+#mapid {
+    height:30vh;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}

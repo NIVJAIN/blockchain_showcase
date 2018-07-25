@@ -26,5 +26,4 @@ limitations of the DOM, and built in in Canvas instead (Easel.js, Tween.js)
 4. Find a way to get a servo to push the track up, or look into model train sets
 5. Start looking into ways to get terrain, paints, to gussy up the prototype? Cork board base?
 
-
 ## Wednesday

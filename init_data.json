@@ -35,6 +35,21 @@
         "owner": "TRADER1"    
     },
 
+    "good3" : {
+        "$class": "org.example.mynetwork.Good",
+        "goodId": "GOOD3",
+        "name": "Cantaloupe shipment",
+        "description": "Big juicy cantaloupes",
+        "status": "MISSING",
+        "location": {
+        "$class": "org.example.mynetwork.Location",
+        "coordinates": ["24.3381", "50.2349"],
+        "name": "Hibachi Port, Tokyo"
+        },
+        "history": [],
+        "owner": "TRADER1"
+    },
+
     "update1" : {
         "$class": "org.example.mynetwork.UpdateLocation",
         "time": "2018-07-20T07:22:01.114Z",
