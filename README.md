@@ -5,6 +5,7 @@
     - Figure out where the distributed ledger file is, and how to view/edit it
     - Ditto for the state key-value store (KVS)
 2. Figure out how to deploy a multi-organisation blockchain
+3. Figure out the small-value purchase and how to get money to buy the model trains
 
 ## Tuesday
 1. Deployed successfully on DigitalOcean after talking on Hyperledger Chat and being told that Docker-in-Docker is not recommended
