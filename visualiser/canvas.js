@@ -174,7 +174,7 @@ function getInitialBlocks() {
             drawBlocks();
         }
     }
-    xhr.open("GET", "http://localhost:9999/blocks");
+    xhr.open("GET", "http://206.189.80.45:9999/blocks");
     xhr.send();
 }
 
@@ -191,7 +191,7 @@ function getNewBlocks() {
             updateBlocks(JSON.parse(this.responseText));
         }
     }
-    xhr.open("GET", "http://localhost:9999/new_blocks");
+    xhr.open("GET", "http://206.189.80.45:9999/new_blocks");
     xhr.send();
 }
 
