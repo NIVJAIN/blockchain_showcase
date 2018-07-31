@@ -27,3 +27,22 @@ limitations of the DOM, and built in in Canvas instead (Easel.js, Tween.js)
 5. Start looking into ways to get terrain, paints, to gussy up the prototype? Cork board base?
 
 ## Wednesday
+1. _Still_ no headway on the shortest path problem
+2. Couldn't get my hands on a Raspi
+3. Canvas blockchain visualisation improved:
+    - Handles multiple block additions smoothly
+    - Displays transaction information for UpdateLocation and AddAsset transactions
+4. Attempted to use Pug/Handlebars templating engines to generate the good detail page; didn't work
+    - These templating engines do not allow you to run Javascript code at runtime 
+    (I think) --- in any case, not worth exploring further
+5. Spoke with friends and was recommended a shop in Sunshine Plaza
+
+## Thursday (TODO)
+1. Spend at least two hours on the shortest path problem
+2. Check in with Oscar to see if he has a Raspi and the sensors I require;
+if not, wait for tomorrow's meeting to ask for it
+3. Do a slide deck to showcase what I have been working on these past few weeks
+
+## Thursday and Friday
+1. Successfully presented and solved the shortest path problem
+2. Scheduled meeting with Phillip on the 6th of August
