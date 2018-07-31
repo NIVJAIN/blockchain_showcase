@@ -56,6 +56,8 @@ if not, wait for tomorrow's meeting to ask for it
 3. Do a slide deck to showcase what I have been working on these past few weeks
 
 ## Thursday and Friday
-1. Successfully presented and solved the shortest path problem
-2. Scheduled meeting with Phillip on the 6th of August
+1. Presented to bosses: was asked to explore the possibility of visualising multi-node consensus and dealing with "bad" transactions
+2. Bosses scheduled meeting with Phillip on the 6th of August
+2. Solved the shortest path problem using `n` invocations of Bellman-Fords' algorithm
+
 
