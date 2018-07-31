@@ -1,7 +1,9 @@
 # Week 6/8 (30 July--3 Aug)
 
 ## Wednesday (TODO)
-1. Figure out whether it's possible to view incoming "bad" transactions *in flagrante*, and how to modify my block visualiser to do so
+1. Figure out whether it's possible to view incoming "bad" transactions *in flagrante*, and how to modify my block visualiser to do so:
+    - Figure out where the distributed ledger file is, and how to view/edit it
+    - Ditto for the state key-value store (KVS)
 2. Figure out how to deploy a multi-organisation blockchain
 
 ## Tuesday
