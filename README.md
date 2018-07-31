@@ -46,3 +46,17 @@ if not, wait for tomorrow's meeting to ask for it
 ## Thursday and Friday
 1. Successfully presented and solved the shortest path problem
 2. Scheduled meeting with Phillip on the 6th of August
+
+# Week 5/8 (30 July--3 Aug)
+
+## Monday
+1. Tried and failed to deploy on Docker
+
+## Tuesday
+1. Deployed successfully on DigitalOcean
+2. Solved the shortest path problem and achieved a 70x further speedup (for a total of 8400x speedup from the naive version)
+3. Read up on Hyperledger Fabric networks and how peers achieve consensus
+
+## Wednesday (TODO)
+1. Figure out whether it's possible to view incoming "bad" transactions *in flagrante*, and how to modify my block visualiser to do so
+2. Figure out how to deploy a multi-organisation blockchain
