@@ -1,69 +1,91 @@
-# Week 6/8 (30 July--3 Aug)
+# Set-up guide 
 
-## Wednesday (TODO)
-1. Figure out whether it's possible to view incoming "bad" transactions *in flagrante*, and how to modify my block visualiser to do so:
-    - Figure out where the distributed ledger file is, and how to view/edit it
-    - Ditto for the state key-value store (KVS)
-2. Figure out how to deploy a multi-organisation blockchain
-3. Figure out the small-value purchase and how to get money to buy the model trains
+This guide will walk through how to set up and deploy a Hyperledger Composer blockchain
+and run my webapps on top of it.
 
-## Tuesday
-1. Deployed successfully on DigitalOcean after talking on Hyperledger Chat and being told that Docker-in-Docker is not recommended
-2. Solved the shortest path problem and achieved a 70x further speedup (for a total of 8400x speedup from the naive version)
-3. Read up on Hyperledger Fabric networks and how peers achieve consensus
+On a clean Ubuntu 16.04 installation as root, run the following commands.
 
-## Monday
-1. Tried and failed to deploy on Docker
+We first do some housekeeping:
 
+```bash
+apt update -y
+apt upgrade -y
+apt install -y \
+	apt-transport-https \
+	bash \
+	build-essential \
+	ca-certificates \
+	curl \
+	git \
+        iputils-ping \
+	python \
+	software-properties-common \
+	sudo \
+	telnet \
+    vim
+mkdir /home/composer
+groupadd composer
+useradd -u 12345 -g composer -d /home/composer -s /bin/bash -p $(echo mypasswd | openssl passwd -1 -stdin) composer
+usermod -aG sudo composer
+chown -R composer:composer /home/composer
+su composer
+cd
+```
 
-# Week 5/8 (23 July---27 July)
+Now that we've set up the system, we can begin our Hyperledger installation. First is installing the Composer command-line tools:
 
-# Friday
-1. Presented to bosses: was asked to explore the possibility of visualising multi-node consensus and dealing with "bad" transactions
-2. Bosses scheduled meeting with Phillip on the 6th of August
-2. Solved the shortest path problem using `n` invocations of Bellman-Fords' algorithm
+```
+curl -O https://hyperledger.github.io/composer/latest/prereqs-ubuntu.sh
+chmod u+x prereqs-ubuntu.sh
+./prereqs-ubuntu.sh
+source ~/.nvm/nvm.sh
+nvm install --lts
+nvm use --lts
+npm install -g composer-cli@0.19
+npm install -g composer-rest-server@0.19
+npm install -g generator-hyperledger-composer@0.19
+npm install -g composer-playground@0.19
+```
+Download Hyperledger Fabric and start the Fabric instance. Note that you will have to run `stopFabric.sh` and `teardownFabric.sh` as well as delete the PeerAdmin and admin cards every time you shut down the machine.
 
-## Thursday (TODO)
-1. Spend at least two hours on the shortest path problem
-2. Check in with Oscar to see if he has a Raspi and the sensors I require;
-if not, wait for tomorrow's meeting to ask for it
-3. Do a slide deck to showcase what I have been working on these past few weeks
+```
+mkdir ~/fabric-dev-servers && cd ~/fabric-dev-servers
+curl -O https://raw.githubusercontent.com/hyperledger/composer-tools/master/packages/fabric-dev-servers/fabric-dev-servers.tar.gz
+tar -xvf fabric-dev-servers.tar.gz
+cd ~/fabric-dev-servers
+export FABRIC_VERSION=hlfv11
+./downloadFabric.sh
+./stopFabric.sh 
+./teardownFabric.sh
 
-## Thursday
-1. Produced slide deck
-2. Oskar has no Raspi/sensors
+composer card delete -c PeerAdmin@fabric-network
+composer card delete -c admin@tutorial-network
 
-## Wednesday (TODO)
-1. Shortest path problem---make sure to make some headway on this
-2. Find a way to get a Raspi and set up HTTP request to the server
-3. Polish up the canvas blockchain visualisation and make sure it handles multiple block additions
-    - Get more information in the canvas blockchain visualisation: transaction information?
-4. Find a way to get a servo to push the track up, or look into model train sets
-5. Start looking into ways to get terrain, paints, to gussy up the prototype? Cork board base?
+./startFabric.sh
+./createPeerAdminCard.sh
+```
 
-## Wednesday
-1. _Still_ no headway on the shortest path problem
-2. Couldn't get my hands on a Raspi
-3. Canvas blockchain visualisation improved:
-    - Handles multiple block additions smoothly
-    - Displays transaction information for UpdateLocation and AddAsset transactions
-4. Attempted to use Pug/Handlebars templating engines to generate the good detail page; didn't work
-    - These templating engines do not allow you to run Javascript code at runtime 
-    (I think) --- in any case, not worth exploring further
-5. Spoke with friends and was recommended a shop in Sunshine Plaza
+Clone [my Github repo](https://github.com/lieuzhenghong/blockchain_showcase.git) to get the web apps (blockchain visualiser, asset tracker, REST endpoint).
 
-## Tuesday (TODO)
-1. Look into visualisation of the blockchain using Siyang's d3 visualisation
-2. Get my hands on a RasPi, light sensor, servo, Wifi adapter?
-3. Start work on the shortest path problem (Johnson's algorithm---Bellman Ford, then Dijkstra's).
+```
+cd ~/dev
+git clone https://github.com/lieuzhenghong/blockchain_showcase.git
+```
 
-## Tuesday
-1. I abandoned Siyang's visualisation, because d3 can't do "real" animation due to the
-limitations of the DOM, and built in in Canvas instead (Easel.js, Tween.js)
-2. Got a light sensor, however, I wasn't able to connect it to the Raspi, and also the Raspi has no Wifi.
-3. Did not manage to do shortest path problem (Johnson's algorithm---Bellman-Ford and Dijkstra's);
+Now, install the PeerAdmin and NetworkAdmin cards, and start the Composer network!
 
-## Monday
-1. Found a way to get block data by trawling GitHub issues [here](https://github.com/hyperledger/composer/issues/3838)
-2. Found a way to do away with the REST API and use Node.js events instead; considering this
-3. Build the groundwork for IoT devices by allowing GET UpdateLocation requests with parameters
+```
+composer network install --card PeerAdmin@hlfv1 --archiveFile tutorial-network@0.0.1.bna
+composer network start --networkName tutorial-network --networkVersion 0.0.1 --networkAdmin admin --networkAdminEnrollSecret adminpw --card PeerAdmin@hlfv1 --file networkadmin.card
+
+composer card import --file networkadmin.card
+composer-rest-server -c admin@tutorial-network -n never -w true
+```
+The output should say something like `REST server running on localhost:3000`; check if everything is working.
+
+Finally, run the web apps I have created:
+```
+source ~/.nvm/nvm.sh
+nvm use --lts
+node server.js
+```
