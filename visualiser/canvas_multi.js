@@ -3,6 +3,7 @@
 const CANVAS = document.getElementById('c');
 const CTX = CANVAS.getContext('2d');
 const STAGE = new createjs.Stage('c');
+const SERVER_URL = "http://209.97.162.4:9999";
 
 CANVAS.width = 1280;
 CANVAS.height = 900;
@@ -186,7 +187,7 @@ function getInitialBlocks() {
             drawBlocks();
         }
     }
-    xhr.open("GET", "http://localhost:9999/blocks");
+    xhr.open("GET", `${SERVER_URL}/blocks`);
     xhr.send();
 }
 
@@ -203,7 +204,7 @@ function getNewBlocks() {
             updateBlocks(JSON.parse(this.responseText));
         }
     }
-    xhr.open("GET", "http://localhost:9999/new_blocks");
+    xhr.open("GET", `${SERVER_URL}/new_blocks`);
     xhr.send();
 }
 
